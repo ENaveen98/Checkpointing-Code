@@ -1,0 +1,184 @@
+Filename: .\Step1_Memory_Profiler.py
+
+Line #    Mem usage    Increment  Occurences   Line Contents
+============================================================
+     4     18.6 MiB     18.6 MiB           1   @profile(stream=fp)
+     5                                         def memtest():
+     6                                         
+     7     18.6 MiB      0.0 MiB           1       import datetime
+     8                                         
+     9    138.3 MiB    119.7 MiB           1       import torch
+    10    138.3 MiB      0.0 MiB           1       import torch.nn as nn
+    11    138.3 MiB      0.0 MiB           1       import torch.nn.functional as F
+    12    138.3 MiB      0.0 MiB           1       import torch.utils.checkpoint as checkpoint
+    13                                         
+    14                                             # conv3x3 wrapper function
+    15    173.0 MiB      0.0 MiB          17       def conv3x3(in_planes, out_planes, stride=1):
+    16                                                 "3x3 convolution with padding"
+    17    182.0 MiB     42.0 MiB          32           return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
+    18    173.0 MiB      0.0 MiB          16                            padding=1, bias=False)
+    19                                         
+    20    138.3 MiB      0.0 MiB           3       class Neural_Network_Layers(nn.Module):
+    21                                         
+    22    138.3 MiB      0.0 MiB           2           def __init__(self):
+    23                                         
+    24    138.3 MiB      0.0 MiB           1               super(Neural_Network_Layers, self).__init__()
+    25                                                     #0_0
+    26    139.0 MiB      0.7 MiB           1               self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3, bias=False)
+    27    139.2 MiB      0.2 MiB           1               self.bn1 = nn.BatchNorm2d(64)
+    28    139.2 MiB      0.0 MiB           1               self.relu1 = nn.ReLU()
+    29    139.2 MiB      0.0 MiB           1               self.mp1 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+    30                                                     #1_0
+    31    139.3 MiB      0.0 MiB           1               self.conv2 = conv3x3(in_planes=64, out_planes=64, stride=1)
+    32    139.3 MiB      0.0 MiB           1               self.bn2 = nn.BatchNorm2d(64)
+    33    139.3 MiB      0.0 MiB           1               self.relu2 = nn.ReLU()
+    34    139.5 MiB      0.0 MiB           1               self.conv3 = conv3x3(in_planes=64, out_planes=64)
+    35    139.5 MiB      0.0 MiB           1               self.bn3 = nn.BatchNorm2d(64)
+    36    139.5 MiB      0.1 MiB           1               self.relu2 = nn.ReLU()
+    37                                                     #1_1
+    38    139.7 MiB      0.0 MiB           1               self.conv4 = conv3x3(in_planes=64, out_planes=64, stride=1)
+    39    139.7 MiB      0.0 MiB           1               self.bn4 = nn.BatchNorm2d(64)
+    40    139.7 MiB      0.0 MiB           1               self.relu3 = nn.ReLU()
+    41    139.8 MiB      0.0 MiB           1               self.conv5 = conv3x3(in_planes=64, out_planes=64)
+    42    139.8 MiB      0.0 MiB           1               self.bn5 = nn.BatchNorm2d(64)
+    43                                         
+    44                                                     #2_0
+    45    140.1 MiB      0.0 MiB           1               self.conv6 = conv3x3(in_planes=64, out_planes=128, stride=2)
+    46    140.1 MiB      0.0 MiB           1               self.bn6 = nn.BatchNorm2d(128)
+    47    140.1 MiB      0.0 MiB           1               self.relu4 = nn.ReLU()
+    48    140.7 MiB      0.0 MiB           1               self.conv7 = conv3x3(in_planes=128, out_planes=128)
+    49    140.7 MiB      0.0 MiB           1               self.bn7 = nn.BatchNorm2d(128)
+    50    140.7 MiB      0.0 MiB           2               self.downsample20 = nn.Sequential(
+    51    140.7 MiB      0.0 MiB           1                   nn.Conv2d(64, 128, kernel_size=1, stride=2, bias=False),
+    52    140.7 MiB      0.0 MiB           1                   nn.BatchNorm2d(128),
+    53                                                     )
+    54    140.7 MiB      0.0 MiB           1               self.relu4 = nn.ReLU()
+    55                                                     #2_1
+    56    141.2 MiB      0.0 MiB           1               self.conv8 = conv3x3(in_planes=128, out_planes=128)
+    57    141.2 MiB      0.0 MiB           1               self.bn8 = nn.BatchNorm2d(128)
+    58    141.2 MiB      0.0 MiB           1               self.relu5 = nn.ReLU()
+    59    141.8 MiB      0.0 MiB           1               self.conv9 = conv3x3(in_planes=128, out_planes=128)
+    60    141.8 MiB      0.0 MiB           1               self.bn9 = nn.BatchNorm2d(128)
+    61                                                     #3_0
+    62    142.9 MiB      0.0 MiB           1               self.conv10 = conv3x3(in_planes=128, out_planes=256, stride=2)
+    63    142.9 MiB      0.0 MiB           1               self.bn10 = nn.BatchNorm2d(256)
+    64    142.9 MiB      0.0 MiB           1               self.relu6 = nn.ReLU()
+    65    145.2 MiB      0.0 MiB           1               self.conv11 = conv3x3(in_planes=256, out_planes=256)
+    66    145.2 MiB      0.0 MiB           1               self.bn11 = nn.BatchNorm2d(256)
+    67    145.4 MiB      0.0 MiB           2               self.downsample30 = nn.Sequential(
+    68    145.3 MiB      0.1 MiB           2                   nn.Conv2d(128, 256,
+    69    145.2 MiB      0.0 MiB           1                             kernel_size=1, stride=2, bias=False),
+    70    145.3 MiB      0.0 MiB           1                   nn.BatchNorm2d(256),
+    71                                                     )
+    72                                                     #3_1
+    73    147.6 MiB      0.0 MiB           1               self.conv12 = conv3x3(in_planes=256, out_planes=256)
+    74    147.6 MiB      0.0 MiB           1               self.bn12 = nn.BatchNorm2d(256)
+    75    147.6 MiB      0.0 MiB           1               self.relu7 = nn.ReLU()
+    76    149.9 MiB      0.0 MiB           1               self.conv13 = conv3x3(in_planes=256, out_planes=256)
+    77    149.9 MiB      0.0 MiB           1               self.bn13 = nn.BatchNorm2d(256)
+    78                                                     #4_0
+    79    154.4 MiB      0.0 MiB           1               self.conv14 = conv3x3(in_planes=256, out_planes=512, stride=2)
+    80    154.4 MiB      0.0 MiB           1               self.bn14 = nn.BatchNorm2d(512)
+    81    154.4 MiB      0.0 MiB           1               self.relu8 = nn.ReLU()
+    82    163.4 MiB      0.0 MiB           1               self.conv15 = conv3x3(in_planes=512, out_planes=512)
+    83    163.4 MiB      0.0 MiB           1               self.bn15 = nn.BatchNorm2d(512)
+    84    164.0 MiB      0.0 MiB           2               self.downsample40 = nn.Sequential(
+    85    163.9 MiB      0.5 MiB           2                   nn.Conv2d(256, 512,
+    86    163.4 MiB      0.0 MiB           1                             kernel_size=1, stride=2, bias=False),
+    87    164.0 MiB      0.1 MiB           1                   nn.BatchNorm2d(512),
+    88                                                     )
+    89                                                     #4_1
+    90    173.0 MiB      0.0 MiB           1               self.conv16 = conv3x3(in_planes=512, out_planes=512)
+    91    173.0 MiB      0.0 MiB           1               self.bn16 = nn.BatchNorm2d(512)
+    92    173.0 MiB      0.0 MiB           1               self.relu9 = nn.ReLU()
+    93    182.0 MiB      0.0 MiB           1               self.conv17 = conv3x3(in_planes=512, out_planes=512)
+    94    182.1 MiB      0.1 MiB           1               self.bn17 = nn.BatchNorm2d(512)
+    95                                                     #0_1
+    96    182.1 MiB      0.0 MiB           1               self.avgpool = nn.AvgPool2d(kernel_size=7, stride=1)
+    97                                         
+    98                                         
+    99    222.1 MiB      0.0 MiB           2           def forward(self, a):
+   100                                                     # FORWARD PASS START - DO NOT REMOVE THIS COMMENT (This is used to parse memory details of forward pass from the memory profiler output)
+   101    419.0 MiB    196.9 MiB           1               out = self.conv1(x)
+   102    615.3 MiB    196.3 MiB           1               out = self.bn1(out)
+   103    811.4 MiB    196.1 MiB           1               out = self.relu1(out)
+   104    958.6 MiB    147.2 MiB           1               out = self.mp1(out)
+   105   1204.1 MiB    245.5 MiB           1               out = self.bn3(self.conv3(self.relu2(self.bn2(self.conv2(out))))) + out # If we need to add residual after some layers all the layers inbetween are considered as a single layer, hence the expression is in a single line
+   106   1253.1 MiB     49.0 MiB           1               out = self.relu2(out)
+   107   1498.1 MiB    245.0 MiB           1               out = self.bn5(self.conv5(self.relu3(self.bn4(self.conv4(out))))) + out # If we need to add residual after some layers all the layers inbetween are considered as a single layer, hence the expression is in a single line
+   108   1547.1 MiB     49.0 MiB           1               out = self.relu3(out)
+   109   1695.2 MiB    148.1 MiB           1               out = self.bn7(self.conv7(self.relu4(self.bn6(self.conv6(out))))) + self.downsample20(out) # If we need to add residual after some layers all the layers inbetween are considered as a single layer, hence the expression is in a single line
+   110   1719.7 MiB     24.5 MiB           1               out = self.relu4(out)
+   111   1842.9 MiB    123.2 MiB           1               out = self.bn9(self.conv9(self.relu5(self.bn8(self.conv8(out))))) + out # If we need to add residual after some layers all the layers inbetween are considered as a single layer, hence the expression is in a single line
+   112   1867.4 MiB     24.5 MiB           1               out = self.relu5(out)
+   113   1942.2 MiB     74.8 MiB           1               out = self.bn11(self.conv11(self.relu6(self.bn10(self.conv10(out))))) + self.downsample30(out)  # If we need to add residual after some layers all the layers inbetween are considered as a single layer, hence the expression is in a single line
+   114   1954.4 MiB     12.3 MiB           1               out = self.relu6(out)
+   115   2015.7 MiB     61.3 MiB           1               out = self.bn13(self.conv13(self.relu7(self.bn12(self.conv12(out))))) + out # If we need to add residual after some layers all the layers inbetween are considered as a single layer, hence the expression is in a single line
+   116   2028.0 MiB     12.3 MiB           1               out = self.relu7(out)
+   117   2065.9 MiB     37.8 MiB           1               out = self.bn15(self.conv15(self.relu8(self.bn14(self.conv14(out))))) + self.downsample40(out)
+   118   2072.0 MiB      6.1 MiB           1               out = self.relu8(out)
+   119   2102.6 MiB     30.6 MiB           1               out = self.bn17(self.conv17(self.relu9(self.bn16(self.conv16(out))))) + out
+   120   2108.8 MiB      6.1 MiB           1               out = self.relu9(out)
+   121   2108.8 MiB      0.0 MiB           1               out = self.avgpool(out)
+   122                                                     # FORWARD PASS END - DO NOT REMOVE THIS COMMENT (This is used to parse memory details of forward pass from the memory profiler output)
+   123   2108.8 MiB      0.0 MiB           1               return out
+   124                                         
+   125    138.3 MiB      0.0 MiB           3       class Fully_Connected_Layers(nn.Module):
+   126                                         
+   127    182.1 MiB      0.0 MiB           2           def __init__(self):
+   128                                         
+   129    182.1 MiB      0.0 MiB           1               super(Fully_Connected_Layers, self).__init__()
+   130    184.0 MiB      2.0 MiB           1               self.fc1 = nn.Linear(in_features=512 , out_features=1000)
+   131                                         
+   132   2108.8 MiB      0.0 MiB           2           def forward(self, x):
+   133   2109.8 MiB      0.9 MiB           1               out = self.fc1(x)
+   134   2109.8 MiB      0.0 MiB           1               return out
+   135                                         
+   136    138.3 MiB      0.0 MiB           3       class My_Nerual_Network(nn.Module):
+   137    138.3 MiB      0.0 MiB           2           def __init__(self):
+   138    138.3 MiB      0.0 MiB           1               super(My_Nerual_Network, self).__init__()
+   139                                         
+   140    182.1 MiB      0.0 MiB           1               self.neural_network = Neural_Network_Layers()
+   141    184.0 MiB      0.0 MiB           1               self.final_module = Fully_Connected_Layers()
+   142                                         
+   143    222.1 MiB      0.0 MiB           2           def forward(self, x):
+   144   2108.8 MiB      0.0 MiB           1               out = self.neural_network(x)
+   145   2108.8 MiB      0.0 MiB           1               out = out.reshape(out.size(0), -1)
+   146   2109.8 MiB      0.0 MiB           1               out = self.final_module(out)
+   147   2109.8 MiB      0.0 MiB           1               return out
+   148                                         
+   149    184.0 MiB      0.0 MiB           1       model = My_Nerual_Network()
+   150                                         
+   151    184.0 MiB      0.0 MiB           1       learning_rate = 0.001
+   152                                             # num_epochs & minibatch_epochs set to 1 for analyzing memory requirements per iteration.
+   153    184.0 MiB      0.0 MiB           1       num_epochs = 1
+   154    184.0 MiB      0.0 MiB           1       minibatch_epochs = 1
+   155                                             # Set minibatch_size
+   156    184.0 MiB      0.0 MiB           1       N = 64
+   157                                             # Set Input and Output Specifications here
+   158    222.0 MiB     37.9 MiB           1       x = torch.ones(N, 3, 224, 224, requires_grad=True)
+   159    222.1 MiB      0.1 MiB           1       target = torch.ones(N).type("torch.LongTensor")
+   160                                             
+   161    222.1 MiB      0.0 MiB           1       input_image = x
+   162    222.1 MiB      0.0 MiB           1       labels = target
+   163    222.1 MiB      0.0 MiB           1       criterion = nn.CrossEntropyLoss()
+   164    222.1 MiB      0.0 MiB           1       optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+   165                                         
+   166    222.1 MiB      0.0 MiB           1       times = []
+   167                                         
+   168    327.8 MiB      0.0 MiB           2       for epoch in range(num_epochs):
+   169                                         
+   170    222.1 MiB      0.0 MiB           1           if epoch == 0 :
+   171    222.1 MiB      0.0 MiB           1               time = datetime.datetime.now()
+   172    222.1 MiB      0.0 MiB           1               times.append(str(time))
+   173    327.8 MiB      0.0 MiB           2           for i in range(minibatch_epochs):
+   174   2109.8 MiB      0.0 MiB           1               out = model(input_image)
+   175   2110.2 MiB      0.4 MiB           1               loss = criterion(out, labels)
+   176   2110.2 MiB      0.0 MiB           1               optimizer.zero_grad()
+   177    327.7 MiB  -1782.4 MiB           1               loss.backward()
+   178    327.8 MiB      0.0 MiB           1               optimizer.step()
+   179    327.8 MiB      0.0 MiB           1           if epoch == num_epochs-1 :
+   180    327.8 MiB      0.0 MiB           1               time = datetime.datetime.now()
+   181    327.8 MiB      0.0 MiB           1               times.append(str(time))
+
+

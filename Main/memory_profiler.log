@@ -1,0 +1,263 @@
+Filename: .\Step1_Memory_Profiler.py
+
+Line #    Mem usage    Increment  Occurences   Line Contents
+============================================================
+     4     18.6 MiB     18.6 MiB           1   @profile(stream=fp)
+     5                                         def memtest():
+     6                                         
+     7     18.6 MiB      0.0 MiB           1       import datetime
+     8                                         
+     9    138.5 MiB    119.9 MiB           1       import torch
+    10    138.5 MiB      0.0 MiB           1       import torch.nn as nn
+    11    138.5 MiB      0.0 MiB           1       import torch.nn.functional as F
+    12    138.5 MiB      0.0 MiB           1       import torch.utils.checkpoint as checkpoint
+    13                                         
+    14    138.5 MiB      0.0 MiB           3       class Neural_Network_Layers(nn.Module):
+    15                                         
+    16    138.5 MiB      0.0 MiB           2           def __init__(self):
+    17                                         
+    18    138.5 MiB      0.0 MiB           1               super(Neural_Network_Layers, self).__init__()
+    19    139.1 MiB      0.7 MiB           1               self.conv1 = nn.Conv2d(3, 32, 3, 2, 1, bias=False)
+    20    139.3 MiB      0.2 MiB           1               self.b1 = nn.BatchNorm2d(32)
+    21    139.3 MiB      0.0 MiB           1               self.relu1 = nn.ReLU(inplace=True)
+    22                                         
+    23    139.3 MiB      0.0 MiB           1               self.conv20 = nn.Conv2d(32, 32, 3, 1, 1, groups=32, bias=False)
+    24    139.3 MiB      0.0 MiB           1               self.b20 = nn.BatchNorm2d(32)
+    25    139.3 MiB      0.0 MiB           1               self.relu20 = nn.ReLU()
+    26    139.3 MiB      0.0 MiB           1               self.conv21 = nn.Conv2d(32, 64, 1, 1, 0, bias=False)
+    27    139.4 MiB      0.1 MiB           1               self.b21 = nn.BatchNorm2d(64)
+    28    139.4 MiB      0.0 MiB           1               self.relu21 = nn.ReLU()
+    29                                         
+    30    139.4 MiB      0.0 MiB           1               self.conv30 = nn.Conv2d(64, 64, 3, 2, 1, groups=64, bias=False)
+    31    139.4 MiB      0.0 MiB           1               self.b30 = nn.BatchNorm2d(64)
+    32    139.4 MiB      0.0 MiB           1               self.relu30 = nn.ReLU()
+    33    139.4 MiB      0.0 MiB           1               self.conv31 = nn.Conv2d(64, 128, 1, 1, 0, bias=False)
+    34    139.4 MiB      0.0 MiB           1               self.b31 = nn.BatchNorm2d(128)
+    35    139.4 MiB      0.0 MiB           1               self.relu31 = nn.ReLU()
+    36                                         
+    37    139.4 MiB      0.0 MiB           1               self.conv40 = nn.Conv2d(128, 128, 3, 1, 1, groups=128, bias=False)
+    38    139.4 MiB      0.0 MiB           1               self.b40 = nn.BatchNorm2d(128)
+    39    139.4 MiB      0.0 MiB           1               self.relu40 = nn.ReLU()
+    40    139.5 MiB      0.1 MiB           1               self.conv41 = nn.Conv2d(128, 128, 1, 1, 0, bias=False)
+    41    139.5 MiB      0.0 MiB           1               self.b41 = nn.BatchNorm2d(128)
+    42    139.5 MiB      0.0 MiB           1               self.relu41 = nn.ReLU()
+    43                                         
+    44    139.5 MiB      0.0 MiB           1               self.conv50 = nn.Conv2d(128, 128, 3, 2, 1, groups=128, bias=False)
+    45    139.5 MiB      0.0 MiB           1               self.b50 = nn.BatchNorm2d(128)
+    46    139.5 MiB      0.0 MiB           1               self.relu50 = nn.ReLU()
+    47    139.6 MiB      0.1 MiB           1               self.conv51 = nn.Conv2d(128, 256, 1, 1, 0, bias=False)
+    48    139.6 MiB      0.0 MiB           1               self.b51 = nn.BatchNorm2d(256)
+    49    139.6 MiB      0.0 MiB           1               self.relu51 = nn.ReLU()
+    50                                         
+    51    139.6 MiB      0.0 MiB           1               self.conv60 = nn.Conv2d(256, 256, 3, 1, 1, groups=256, bias=False)
+    52    139.6 MiB      0.0 MiB           1               self.b60 = nn.BatchNorm2d(256)
+    53    139.6 MiB      0.0 MiB           1               self.relu60 = nn.ReLU()
+    54    139.9 MiB      0.3 MiB           1               self.conv61 = nn.Conv2d(256, 256, 1, 1, 0, bias=False)
+    55    139.9 MiB      0.0 MiB           1               self.b61 = nn.BatchNorm2d(256)
+    56    139.9 MiB      0.0 MiB           1               self.relu61 = nn.ReLU()
+    57                                         
+    58    139.9 MiB      0.0 MiB           1               self.conv70 = nn.Conv2d(256, 256, 3, 2, 1, groups=256, bias=False)
+    59    139.9 MiB      0.0 MiB           1               self.b70 = nn.BatchNorm2d(256)
+    60    139.9 MiB      0.0 MiB           1               self.relu70 = nn.ReLU()
+    61    140.4 MiB      0.5 MiB           1               self.conv71 = nn.Conv2d(256, 512, 1, 1, 0, bias=False)
+    62    140.4 MiB      0.0 MiB           1               self.b71 = nn.BatchNorm2d(512)
+    63    140.4 MiB      0.0 MiB           1               self.relu71 = nn.ReLU()
+    64                                         
+    65    140.4 MiB      0.0 MiB           1               self.conv80 = nn.Conv2d(512, 512, 3, 1, 1, groups=512, bias=False)
+    66    140.4 MiB      0.0 MiB           1               self.b80 = nn.BatchNorm2d(512)
+    67    140.4 MiB      0.0 MiB           1               self.relu80 = nn.ReLU()
+    68    141.5 MiB      1.1 MiB           1               self.conv81 = nn.Conv2d(512, 512, 1, 1, 0, bias=False)
+    69    141.5 MiB      0.0 MiB           1               self.b81 = nn.BatchNorm2d(512)
+    70    141.5 MiB      0.0 MiB           1               self.relu81 = nn.ReLU()
+    71                                         
+    72    141.6 MiB      0.1 MiB           1               self.conv90 = nn.Conv2d(512, 512, 3, 1, 1, groups=512, bias=False)
+    73    141.6 MiB      0.0 MiB           1               self.b90 = nn.BatchNorm2d(512)
+    74    141.6 MiB      0.0 MiB           1               self.relu90 = nn.ReLU()
+    75    142.6 MiB      1.0 MiB           1               self.conv91 = nn.Conv2d(512, 512, 1, 1, 0, bias=False)
+    76    142.6 MiB      0.1 MiB           1               self.b91 = nn.BatchNorm2d(512)
+    77    142.6 MiB      0.0 MiB           1               self.relu91 = nn.ReLU()
+    78                                         
+    79    142.7 MiB      0.0 MiB           1               self.conv100 = nn.Conv2d(512, 512, 3, 1, 1, groups=512, bias=False)
+    80    142.7 MiB      0.0 MiB           1               self.b100 = nn.BatchNorm2d(512)
+    81    142.7 MiB      0.0 MiB           1               self.relu100 = nn.ReLU()
+    82    143.7 MiB      1.0 MiB           1               self.conv101 = nn.Conv2d(512, 512, 1, 1, 0, bias=False)
+    83    143.7 MiB      0.0 MiB           1               self.b101 = nn.BatchNorm2d(512)
+    84    143.7 MiB      0.0 MiB           1               self.relu101 = nn.ReLU()
+    85                                         
+    86    143.7 MiB      0.0 MiB           1               self.conv110 = nn.Conv2d(512, 512, 3, 1, 1, groups=512, bias=False)
+    87    143.7 MiB      0.0 MiB           1               self.b110 = nn.BatchNorm2d(512)
+    88    143.7 MiB      0.0 MiB           1               self.relu110 = nn.ReLU()
+    89    144.7 MiB      1.0 MiB           1               self.conv111 = nn.Conv2d(512, 512, 1, 1, 0, bias=False)
+    90    144.7 MiB      0.0 MiB           1               self.b111 = nn.BatchNorm2d(512)
+    91    144.7 MiB      0.0 MiB           1               self.relu111 = nn.ReLU()
+    92                                         
+    93    144.8 MiB      0.1 MiB           1               self.conv120 = nn.Conv2d(512, 512, 3, 1, 1, groups=512, bias=False)
+    94    144.8 MiB      0.0 MiB           1               self.b120 = nn.BatchNorm2d(512)
+    95    144.8 MiB      0.0 MiB           1               self.relu120 = nn.ReLU()
+    96    145.8 MiB      1.0 MiB           1               self.conv121 = nn.Conv2d(512, 512, 1, 1, 0, bias=False)
+    97    145.8 MiB      0.0 MiB           1               self.b121 = nn.BatchNorm2d(512)
+    98    145.8 MiB      0.0 MiB           1               self.relu121 = nn.ReLU()
+    99                                         
+   100    145.8 MiB      0.0 MiB           1               self.conv130 = nn.Conv2d(512, 512, 3, 2, 1, groups=512, bias=False)
+   101    145.9 MiB      0.1 MiB           1               self.b130 = nn.BatchNorm2d(512)
+   102    145.9 MiB      0.0 MiB           1               self.relu130 = nn.ReLU()
+   103    147.9 MiB      2.0 MiB           1               self.conv131 = nn.Conv2d(512, 1024, 1, 1, 0, bias=False)
+   104    147.9 MiB      0.0 MiB           1               self.b131 = nn.BatchNorm2d(1024)
+   105    147.9 MiB      0.0 MiB           1               self.relu131 = nn.ReLU()
+   106                                         
+   107    147.9 MiB      0.0 MiB           1               self.conv140 = nn.Conv2d(1024, 1024, 3, 1, 1, groups=1024, bias=False)
+   108    147.9 MiB      0.0 MiB           1               self.b140 = nn.BatchNorm2d(1024)
+   109    147.9 MiB      0.0 MiB           1               self.relu140 = nn.ReLU()
+   110    151.9 MiB      4.0 MiB           1               self.conv141 = nn.Conv2d(1024, 1024, 1, 1, 0, bias=False)
+   111    152.0 MiB      0.0 MiB           1               self.b141 = nn.BatchNorm2d(1024)
+   112    152.0 MiB      0.0 MiB           1               self.relu141 = nn.ReLU()
+   113                                         
+   114    152.0 MiB      0.1 MiB           1               self.avgpl = nn.AvgPool2d(7)
+   115                                         
+   116    175.4 MiB      0.0 MiB           2           def forward(self, a):
+   117                                                     # FORWARD PASS START - DO NOT REMOVE THIS COMMENT (This is used to parse memory details of forward pass from the memory profiler output)
+   118    225.3 MiB     49.9 MiB           1               out = self.conv1(a)
+   119    274.7 MiB     49.4 MiB           1               out = self.b1(out)
+   120    274.7 MiB      0.1 MiB           1               out = self.relu1(out)
+   121    324.0 MiB     49.2 MiB           1               out = self.conv20(out)
+   122    373.0 MiB     49.0 MiB           1               out = self.b20(out)
+   123    422.0 MiB     49.0 MiB           1               out = self.relu20(out)
+   124    520.3 MiB     98.3 MiB           1               out = self.conv21(out)
+   125    618.3 MiB     98.0 MiB           1               out = self.b21(out)
+   126    716.3 MiB     98.0 MiB           1               out = self.relu21(out)
+   127    741.0 MiB     24.7 MiB           1               out = self.conv30(out)
+   128    765.5 MiB     24.5 MiB           1               out = self.b30(out)
+   129    790.0 MiB     24.5 MiB           1               out = self.relu30(out)
+   130    839.2 MiB     49.2 MiB           1               out = self.conv31(out)
+   131    888.3 MiB     49.0 MiB           1               out = self.b31(out)
+   132    937.3 MiB     49.0 MiB           1               out = self.relu31(out)
+   133    986.3 MiB     49.0 MiB           1               out = self.conv40(out)
+   134   1035.3 MiB     49.0 MiB           1               out = self.b40(out)
+   135   1084.3 MiB     49.0 MiB           1               out = self.relu40(out)
+   136   1133.5 MiB     49.1 MiB           1               out = self.conv41(out)
+   137   1182.5 MiB     49.0 MiB           1               out = self.b41(out)
+   138   1231.5 MiB     49.0 MiB           1               out = self.relu41(out)
+   139   1243.8 MiB     12.4 MiB           1               out = self.conv50(out)
+   140   1256.1 MiB     12.3 MiB           1               out = self.b50(out)
+   141   1268.3 MiB     12.3 MiB           1               out = self.relu50(out)
+   142   1293.1 MiB     24.8 MiB           1               out = self.conv51(out)
+   143   1317.6 MiB     24.5 MiB           1               out = self.b51(out)
+   144   1342.1 MiB     24.5 MiB           1               out = self.relu51(out)
+   145   1366.7 MiB     24.6 MiB           1               out = self.conv60(out)
+   146   1391.2 MiB     24.5 MiB           1               out = self.b60(out)
+   147   1415.7 MiB     24.5 MiB           1               out = self.relu60(out)
+   148   1440.6 MiB     24.9 MiB           1               out = self.conv61(out)
+   149   1465.1 MiB     24.5 MiB           1               out = self.b61(out)
+   150   1489.6 MiB     24.5 MiB           1               out = self.relu61(out)
+   151   1495.8 MiB      6.2 MiB           1               out = self.conv70(out)
+   152   1501.9 MiB      6.1 MiB           1               out = self.b70(out)
+   153   1508.0 MiB      6.1 MiB           1               out = self.relu70(out)
+   154   1520.9 MiB     12.8 MiB           1               out = self.conv71(out)
+   155   1533.1 MiB     12.3 MiB           1               out = self.b71(out)
+   156   1545.4 MiB     12.3 MiB           1               out = self.relu71(out)
+   157   1557.8 MiB     12.4 MiB           1               out = self.conv80(out)
+   158   1570.0 MiB     12.3 MiB           1               out = self.b80(out)
+   159   1582.3 MiB     12.3 MiB           1               out = self.relu80(out)
+   160   1594.6 MiB     12.3 MiB           1               out = self.conv81(out)
+   161   1606.8 MiB     12.3 MiB           1               out = self.b81(out)
+   162   1619.1 MiB     12.3 MiB           1               out = self.relu81(out)
+   163   1631.3 MiB     12.3 MiB           1               out = self.conv90(out)
+   164   1643.6 MiB     12.3 MiB           1               out = self.b90(out)
+   165   1655.8 MiB     12.3 MiB           1               out = self.relu90(out)
+   166   1668.1 MiB     12.3 MiB           1               out = self.conv91(out)
+   167   1680.3 MiB     12.3 MiB           1               out = self.b91(out)
+   168   1692.6 MiB     12.3 MiB           1               out = self.relu91(out)
+   169   1704.9 MiB     12.3 MiB           1               out = self.conv100(out)
+   170   1717.1 MiB     12.3 MiB           1               out = self.b100(out)
+   171   1729.4 MiB     12.3 MiB           1               out = self.relu100(out)
+   172   1741.6 MiB     12.3 MiB           1               out = self.conv101(out)
+   173   1753.9 MiB     12.3 MiB           1               out = self.b101(out)
+   174   1766.1 MiB     12.3 MiB           1               out = self.relu101(out)
+   175   1778.4 MiB     12.3 MiB           1               out = self.conv110(out)
+   176   1790.6 MiB     12.3 MiB           1               out = self.b110(out)
+   177   1802.9 MiB     12.3 MiB           1               out = self.relu110(out)
+   178   1815.1 MiB     12.3 MiB           1               out = self.conv111(out)
+   179   1827.4 MiB     12.3 MiB           1               out = self.b111(out)
+   180   1839.6 MiB     12.3 MiB           1               out = self.relu111(out)
+   181   1851.9 MiB     12.3 MiB           1               out = self.conv120(out)
+   182   1864.2 MiB     12.3 MiB           1               out = self.b120(out)
+   183   1876.4 MiB     12.3 MiB           1               out = self.relu120(out)
+   184   1888.7 MiB     12.3 MiB           1               out = self.conv121(out)
+   185   1900.9 MiB     12.3 MiB           1               out = self.b121(out)
+   186   1913.2 MiB     12.3 MiB           1               out = self.relu121(out)
+   187   1916.3 MiB      3.1 MiB           1               out = self.conv130(out)
+   188   1919.3 MiB      3.1 MiB           1               out = self.b130(out)
+   189   1922.4 MiB      3.1 MiB           1               out = self.relu130(out)
+   190   1928.7 MiB      6.3 MiB           1               out = self.conv131(out)
+   191   1934.8 MiB      6.1 MiB           1               out = self.b131(out)
+   192   1940.9 MiB      6.1 MiB           1               out = self.relu131(out)
+   193   1947.1 MiB      6.2 MiB           1               out = self.conv140(out)
+   194   1953.3 MiB      6.1 MiB           1               out = self.b140(out)
+   195   1959.4 MiB      6.1 MiB           1               out = self.relu140(out)
+   196   1965.6 MiB      6.2 MiB           1               out = self.conv141(out)
+   197   1971.7 MiB      6.1 MiB           1               out = self.b141(out)
+   198   1977.8 MiB      6.1 MiB           1               out = self.relu141(out)
+   199   1978.0 MiB      0.2 MiB           1               out  = self.avgpl(out)
+   200                                                     # FORWARD PASS END - DO NOT REMOVE THIS COMMENT (This is used to parse memory details of forward pass from the memory profiler output)
+   201   1978.0 MiB      0.0 MiB           1               return out
+   202                                         
+   203    138.5 MiB      0.0 MiB           3       class Fully_Connected_Layers(nn.Module):
+   204                                         
+   205    152.0 MiB      0.0 MiB           2           def __init__(self):
+   206                                         
+   207    152.0 MiB      0.0 MiB           1               super(Fully_Connected_Layers, self).__init__()
+   208    155.9 MiB      3.9 MiB           1               self.fc1 = nn.Linear(1024, 1000)
+   209    155.9 MiB      0.0 MiB           1               self.softmax = nn.Softmax(dim=1)
+   210                                         
+   211   1978.1 MiB      0.0 MiB           2           def forward(self, x):
+   212   1979.4 MiB      1.4 MiB           1               out = self.softmax(self.fc1(x))
+   213   1979.4 MiB      0.0 MiB           1               return out
+   214                                         
+   215    138.5 MiB      0.0 MiB           3       class My_Nerual_Network(nn.Module):
+   216    138.5 MiB      0.0 MiB           2           def __init__(self):
+   217    138.5 MiB      0.0 MiB           1               super(My_Nerual_Network, self).__init__()
+   218                                         
+   219    152.0 MiB      0.0 MiB           1               self.neural_network = Neural_Network_Layers()
+   220    155.9 MiB      0.0 MiB           1               self.final_module = Fully_Connected_Layers()
+   221                                         
+   222    175.4 MiB      0.0 MiB           2           def forward(self, x):
+   223   1978.0 MiB      0.0 MiB           1               out = self.neural_network(x)
+   224   1978.1 MiB      0.0 MiB           1               out = out.reshape(out.size(0), -1)
+   225   1979.4 MiB      0.0 MiB           1               out = self.final_module(out)
+   226   1979.4 MiB      0.0 MiB           1               return out
+   227                                         
+   228    155.9 MiB      0.0 MiB           1       model = My_Nerual_Network()
+   229                                         
+   230    155.9 MiB      0.0 MiB           1       learning_rate = 0.001
+   231                                             # num_epochs & minibatch_epochs set to 1 for analyzing memory requirements per iteration.
+   232    155.9 MiB      0.0 MiB           1       num_epochs = 1
+   233    155.9 MiB      0.0 MiB           1       minibatch_epochs = 1
+   234                                             # Set minibatch_size
+   235    155.9 MiB      0.0 MiB           1       N = 32
+   236                                             # Set Input and Output Specifications here
+   237    175.3 MiB     19.4 MiB           1       x = torch.ones(N, 3, 224, 224, requires_grad=True)
+   238    175.4 MiB      0.1 MiB           1       target = torch.ones(N).type("torch.LongTensor")
+   239                                             
+   240    175.4 MiB      0.0 MiB           1       input_image = x
+   241    175.4 MiB      0.0 MiB           1       labels = target
+   242    175.4 MiB      0.0 MiB           1       criterion = nn.CrossEntropyLoss()
+   243    175.4 MiB      0.0 MiB           1       optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+   244                                         
+   245    175.4 MiB      0.0 MiB           1       times = []
+   246                                         
+   247    230.2 MiB      0.0 MiB           2       for epoch in range(num_epochs):
+   248                                         
+   249    175.4 MiB      0.0 MiB           1           if epoch == 0 :
+   250    175.4 MiB      0.0 MiB           1               time = datetime.datetime.now()
+   251    175.4 MiB      0.0 MiB           1               times.append(str(time))
+   252    230.2 MiB      0.0 MiB           2           for i in range(minibatch_epochs):
+   253   1979.4 MiB      0.0 MiB           1               out = model(input_image)
+   254   1979.6 MiB      0.2 MiB           1               loss = criterion(out, labels)
+   255   1979.6 MiB      0.0 MiB           1               optimizer.zero_grad()
+   256    230.2 MiB  -1749.4 MiB           1               loss.backward()
+   257    230.2 MiB      0.0 MiB           1               optimizer.step()
+   258    230.2 MiB      0.0 MiB           1           if epoch == num_epochs-1 :
+   259    230.2 MiB      0.0 MiB           1               time = datetime.datetime.now()
+   260    230.2 MiB      0.0 MiB           1               times.append(str(time))
+
+
